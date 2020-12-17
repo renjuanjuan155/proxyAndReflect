@@ -7,7 +7,7 @@ package com.example.aopzhujie.jdkProxy;
  */
 public interface UserDao {
 
-    public void add();
+    public  void add();
 
     public void delete();
 }
