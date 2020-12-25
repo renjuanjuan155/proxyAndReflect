@@ -11,8 +11,8 @@ public class TestThread {
         Object object = new Object();
         MyThread waitThread = new MyThread(true, object);
         MyThread notifyThread = new MyThread(false, object);
-        Thread thread1 = new Thread(waitThread, "wait线程");
-        Thread thread2 = new Thread(notifyThread, "notify线程");
+        Thread thread1 = new Thread(waitThread, "wait线程1");
+        Thread thread2 = new Thread(notifyThread, "notify线程1");
         thread1.start();
         Thread.sleep(1000);
         thread2.start();

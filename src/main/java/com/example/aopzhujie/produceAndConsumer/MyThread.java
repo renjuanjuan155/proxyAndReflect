@@ -14,7 +14,7 @@ public class MyThread implements Runnable {
         if (flag){
             this.waitMethod();
         }else {
-            this.notifyAllMethod();
+            this.notifyMethod();
         }
     }
 
