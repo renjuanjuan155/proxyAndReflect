@@ -34,7 +34,7 @@
 
 
 
-        <table tableName="course" domainObjectName="Course" enableCountByExample="false"
+        <table tableName="user" domainObjectName="user" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false"/>
 
