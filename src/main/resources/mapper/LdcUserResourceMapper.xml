@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.aopzhujie.mapper.LdcUserResourceMapper">
+
+
+    <select id="getUserId" resultType="long">
+        SELECT
+        DISTINCT user_id userId
+        FROM
+        ldc_user_resource
+    </select>
+
+    <select id="getRecourse" parameterType="long" resultType="long">
+        SELECT
+        resource_id resourceId
+        FROM
+        ldc_user_resource
+        where user_id = #{userId}
+    </select>
+
+    <select id="getCourseId" parameterType="long" resultType="long">
+        SELECT
+        course_id
+        FROM
+        ldc_serial_course
+        where serial_id = #{recourseId}
+    </select>
+
+    <insert id="getintert" parameterType="com.example.aopzhujie.model.LdcCourseVip">
+        insert into ldc_course_vip (`coures_id`,`vip_id`,`create_time`) VALUES (#{couresId},#{vipId},now())
+    </insert>
+
+    <select id="getVipId" resultType="long">
+        SELECT
+        DISTINCT vip_id vipId
+        from ldc_course_vip
+    </select>
+
+</mapper>

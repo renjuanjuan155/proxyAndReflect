@@ -3,9 +3,9 @@ server:
   port: 8088
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/springboot?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: ldc
+    password: ldc@LoveData.2020
+    url: jdbc:mysql://172.16.93.232:3306/lovedata_ldc?autoReconnect=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&tinyInt1isBit=false
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:
