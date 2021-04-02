@@ -3,10 +3,15 @@ server:
   port: 8088
 spring:
   datasource:
-    username: ldc
-    password: ldc@LoveData.2020
-    url: jdbc:mysql://172.16.93.232:3306/lovedata_ldc?autoReconnect=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&tinyInt1isBit=false
+    username: tjw
+    password: tjw-test@ITongJi.2020
+    url: jdbc:mysql://47.96.73.117:3306/itongji_sjj?autoReconnect=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&tinyInt1isBit=false
     driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -14,3 +19,5 @@ mybatis:
     #log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #org.apache.ibatis.logging.log4j.Log4jImpl
     call-setters-on-nulls: true
+
+

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.aopzhujie.mapper.TestMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap id="usersMap" type="com.example.aopzhujie.dto.ItongjiUsers">
+        <result property="id" column="id"/>
+        <result property="status" column="status"/>
+        <result property="name" column="name"/>
+        <result property="pwd" column="pwd"/>
+        <result property="trueName" column="true_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="title" column="title"/>
+        <result property="organization" column="organization"/>
+        <result property="introduction" column="introduction"/>
+        <result property="isThirdSite" column="is_third_site"/>
+        <result property="thirdSiteUserType" column="third_site_user_type"/>
+        <result property="wxSpUserSessioKey" column="wx_sp_user_session_key"/>
+        <result property="thirdSiteUserId" column="third_site_user_id"/>
+        <result property="thirdSiteOpenId" column="third_site_open_id"/>
+        <result property="email" column="email"/>
+        <result property="emailBind" column="email_bind"/>
+        <result property="emailBindCode" column="email_bind_code"/>
+        <result property="company" column="company"/>
+        <result property="career" column="career"/>
+        <result property="degree" column="degree"/>
+        <result property="type" column="type"/>
+        <result property="cardUrl" column="card_url"/>
+        <result property="cardUploadTime" column="card_upload_time"/>
+        <result property="cardVerifyTime" column="card_verify_time"/>
+        <result property="cardVerifyStatus" column="card_verify_status"/>
+        <result property="cardVerifyNote" column="card_verify_note"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="county" column="county"/>
+        <result property="address" column="address"/>
+        <result property="zip" column="zip"/>
+        <result property="tel" column="tel"/>
+        <result property="mobile" column="mobile"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="isReceiveMsg" column="is_receive_msg"/>
+        <result property="isEnable" column="is_enable"/>
+        <result property="isCanceled" column="is_canceled"/>
+        <result property="isBlackUser" column="is_black_user"/>
+        <result property="remark" column="remark"/>
+        <result property="creater" column="creater"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="disabled" column="disabled"/>
+        <result property="version" column="version"/>
+        <result property="wechat" column="wechat"/>
+        <result property="idCard" column="id_card"/>
+        <result property="userTitle" column="user_title"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="contactMobile" column="contact_mobile"/>
+        <result property="industryId" column="industry_id"/>
+        <result property="qqNum" column="qq_num"/>
+    </resultMap>
+
+    <!--查询两个表中手机号相同的用户id-->
+    <select id="getdataOne" resultType="com.example.aopzhujie.dto.MobileSameDto">
+        SELECT
+        users.id itongjiId,
+        users.mobile itongjimobile,
+        ldcusers.id ldcId,
+        ldcusers.mobile ldcMobile
+        from users
+        inner join ldc_users ldcusers on users.mobile = ldcusers.mobile
+        where users.mobile is not null
+        and users.mobile != ''
+        and ldcusers.mobile is not null
+        and ldcusers.mobile != ''
+    </select>
+
+
+    <!--查询ldc表中没有在itongji表中的数据-->
+    <select id="getLdcMobileNotInintongji" resultType="com.example.aopzhujie.dto.MobileDiffDto">
+        SELECT
+        ldcUsers.id ldcId
+        from ldc_users  ldcUsers
+        where ldcUsers.mobile not in
+        (
+        SELECT
+        DISTINCT
+        users.mobile
+        from users
+        where  users.mobile is not null
+        and users.mobile != ''
+        )
+        and ldcUsers.mobile != ''
+        and ldcUsers.mobile is not null
+    </select>
+
+    <!--根据id查询ldc中的users表信息信息-->
+    <select id="getLdcusersById" resultMap="usersMap">
+        select *
+        from ldc_users
+        where id = #{id}
+    </select>
+
+    <insert id="saveItongjiUsers" parameterType="com.example.aopzhujie.dto.ItongjiUsers" useGeneratedKeys="true" keyProperty="id">
+    insert into users
+		(
+		`status`,
+		`name`,
+		`pwd`,
+		`true_name`,
+		`nick_name`,
+		`avatar`,
+		`title`,
+		`organization`,
+		`introduction`,
+		`is_third_site`,
+		`third_site_user_type`,
+		`wx_sp_user_session_key`,
+		`third_site_user_id`,
+		`third_site_open_id`,
+		`email`,
+		`email_bind`,
+		`email_bind_code`,
+		`company`,
+		`career`,
+		`degree`,
+		`type`,
+		`card_url`,
+		`card_upload_time`,
+		`card_verify_time`,
+		`card_verify_status`,
+		`card_verify_note`,
+		`province`,
+		`city`,
+		`county`,
+		`address`,
+		`zip`,
+		`tel`,
+		`mobile`,
+		`sex`,
+		`birthday`,
+		`is_receive_msg`,
+		`is_enable`,
+		`is_canceled`,
+		`is_black_user`,
+		`remark`,
+		`creater`,
+		`create_time`,
+		`modifier`,
+		`modify_time`,
+		`disabled`,
+		`version`,
+		`wechat`,
+		`id_card`,
+		`user_title`,
+		`enterprise_id`,
+		`contact_mobile`,
+		`industry_id`,
+		`qq_num`
+		)
+		values
+		(
+		#{status},
+		#{name},
+		#{pwd},
+		#{trueName},
+		#{nickName},
+		#{avatar},
+		#{type},
+		#{organization},
+		#{introduction},
+		#{isThirdSite},
+		#{thirdSiteUserType},
+		#{wxSpUserSessionKey},
+		#{thirdSiteUserId},
+		#{thirdSiteOpenId},
+		#{email},
+		#{emailBind},
+		#{emailBindCode},
+		#{company},
+		#{career},
+		#{degree},
+		#{type},
+		#{cardUrl},
+		#{cardUploadTime},
+		#{cardVerifyTime},
+		#{cardVerifyStatus},
+		#{cardVerifyNote},
+		#{province},
+		#{city},
+		#{county},
+		#{address},
+		#{zip},
+		#{tel},
+		#{mobile},
+		#{sex},
+		#{birthday},
+		#{isReceiveMsg},
+		#{isEnable},
+		#{isCanceled},
+		#{isBlackUser},
+		#{remark},
+		#{creater},
+		#{createTime},
+		#{modifier},
+		#{modifyTime},
+		#{disabled},
+		#{version},
+		#{wechat},
+		#{idCard},
+		#{userTitle},
+		#{enterpriseId},
+		#{contactMobile},
+		#{industryId},
+		#{qqNum}
+		)
+    </insert>
+
+    <update id="updateLdcToItongjiId">
+        update ldc_course_vip set vip_id = #{itongjiId}
+        where vip_id = #{ldcId}
+    </update>
+
+	<!--查询ldc_users中的mobile为空或者‘’的id-->
+	<select id="getMobileIsNullLdcUsers" resultType="long">
+		SELECT
+		id
+		from ldc_users
+		where
+		mobile = ''
+		or mobile is null
+	</select>
+
+	<!--查询出users中mobile为空或者‘’的id-->
+	<select id="getMobileIsNullUsers" resultType="long">
+		SELECT
+		id
+		from users
+		where
+		mobile = ''
+		or mobile is null
+	</select>
+
+	<!--查询出ldc_users和users中mobile为空或‘’时，信息相等的id-->
+	<select id="getMobileIsNull" resultType="com.example.aopzhujie.dto.MobileIsNullDto">
+		SELECT
+        users.id itongjiId
+        from users
+        inner join ldc_users ldcusers
+		on users.wx_sp_user_session_key = ldcusers.wx_sp_user_session_key
+		and users.third_site_open_id = ldcusers.third_site_open_id
+		and users.third_site_user_id = ldcusers.third_site_user_id
+		where (users.mobile is  null
+		or users.mobile = '')
+		and (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+	</select>
+
+
+</mapper>
