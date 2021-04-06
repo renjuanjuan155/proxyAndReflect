@@ -9,5 +9,7 @@ import lombok.Data;
 @Data
 public class MobileIsNullDto {
 
-    private Long id;
+    private Long itongjiId;
+
+    private Long ldcId;
 }

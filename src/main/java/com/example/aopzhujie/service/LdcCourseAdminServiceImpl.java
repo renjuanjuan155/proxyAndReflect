@@ -1,3 +1,4 @@
+/*
 package com.example.aopzhujie.service;
 
 import com.example.aopzhujie.mapper.LdcUserResourceMapper;
@@ -9,11 +10,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+*/
 /**
  * @Description
  * @Date 2021/1/14 17:56
  * @Created by meijunjie
- */
+ *//*
+
 @Service("ldcCourseAdminServiceImpl")
 public class LdcCourseAdminServiceImpl {
 
@@ -45,3 +48,4 @@ public class LdcCourseAdminServiceImpl {
         }
     }
 }
+*/

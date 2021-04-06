@@ -244,7 +244,8 @@
 	<!--查询出ldc_users和users中mobile为空或‘’时，信息相等的id-->
 	<select id="getMobileIsNull" resultType="com.example.aopzhujie.dto.MobileIsNullDto">
 		SELECT
-        users.id itongjiId
+        users.id itongjiId,
+        ldcusers.id ldcId
         from users
         inner join ldc_users ldcusers
 		on users.wx_sp_user_session_key = ldcusers.wx_sp_user_session_key
@@ -255,6 +256,197 @@
 		and (ldcusers.mobile is  null
 		or ldcusers.mobile = '')
 	</select>
+    
+    <select id="getMobileIsNullsessionisKeynull" resultType="long">
+        SELECT
+        ldcusers.id ldcId
+        from users
+        inner join ldc_users ldcusers
+		on 
+		 users.third_site_open_id = ldcusers.third_site_open_id
+		and users.third_site_user_id = ldcusers.third_site_user_id
+		where (users.mobile is  null
+		or users.mobile = '')
+		and (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+and users.wx_sp_user_session_key is NULL
+and ldcusers.wx_sp_user_session_key is null
+    </select>
+    
+    <select id="getMobileIsNullOpenIdNull" resultType="long">
+SELECT
+        ldcusers.id ldcId
+        from users
+        inner join ldc_users ldcusers
+		on 
+users.wx_sp_user_session_key = ldcusers.wx_sp_user_session_key
+	 
+		and users.third_site_user_id = ldcusers.third_site_user_id
+		where (users.mobile is  null
+		or users.mobile = '')
+		and (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+and users.third_site_open_id is NULL
+and ldcusers.third_site_open_id is null
+    </select>
+    
+    <select id="getMobileisNullSiteIsNull" resultType="long">
+        SELECT
+        ldcusers.id ldcId
+        from users
+        inner join ldc_users ldcusers
+		on
+users.wx_sp_user_session_key = ldcusers.wx_sp_user_session_key
+and users.third_site_open_id = ldcusers.third_site_open_id
+		where (users.mobile is  null
+		or users.mobile = '')
+		and (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+and users.third_site_user_id is NULL
+and ldcusers.third_site_user_id is null
+    </select>
+
+    <select id="getLdcNull" resultType="long">
+        SELECT
+        ldcusers.id id
+      from ldc_users ldcusers
+		where
+ (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+and ldcusers.wx_sp_user_session_key is null
+and ldcusers.third_site_user_id is null
+and ldcusers.wx_sp_user_session_key is null
+    </select>
+    <select id="getUsersNull" resultType="com.example.aopzhujie.dto.MobileNullDto">
+        SELECT
+        ldcusers.id id,
+        ldcusers.true_name trueName
+      from users ldcusers
+		where
+ (ldcusers.mobile is  null
+		or ldcusers.mobile = '')
+and ldcusers.wx_sp_user_session_key is null
+and ldcusers.third_site_user_id is null
+and ldcusers.wx_sp_user_session_key is null
+    </select>
+
+	<!--替换ldc_course_work_submit表中的vip_student_id-->
+	<update id="updateCourseWorkSubmit">
+        update ldc_course_work_submit set vip_student_id = #{itongjiId}
+        where vip_student_id = #{ldcId}
+    </update>
+
+	<!--替换ldc_course_work_submit_reply表中的vip_student_id-->
+	<update id="updateCourseWorkSubmitReply">
+        update ldc_course_work_submit_reply set creator = #{itongjiId}
+        where creator = #{ldcId}
+    </update>
+
+	<update id="updateLdcForumPost">
+        update ldc_forum_post set creator = #{itongjiId}
+        where creator = #{ldcId}
+    </update>
+
+	<update id="updateLdcForumPostAttention">
+        update ldc_forum_post_attention set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcForumPostLike">
+        update ldc_forum_post_like set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcForumPostReply">
+        update ldc_forum_post_reply set creator = #{itongjiId}
+        where creator = #{ldcId}
+    </update>
+
+	<update id="updateLdcgraduationReg">
+        update ldc_forum_graduation_reg set student_info_id = #{itongjiId}
+        where student_info_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcLearnedSection">
+        update ldc_learned_section set vip_student_id = #{itongjiId}
+        where vip_student_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcMsg">
+        update ldc_msg set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcPointExechangeRecord">
+        update ldc_point_exechange_record set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcUserResource">
+        update ldc_user_resource set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateLdcVipInfo">
+        update ldc_vip_info set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestion">
+        update question set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestionAnswer">
+        update question_answer set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestionAnswerLike">
+        update question_answer_like set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestionCollection">
+        update question_collection set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestionForwarding">
+        update question_forwarding set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateQuestionLike">
+        update question_like set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateSpecial">
+        update special set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateSpecialAttention">
+        update special_attention set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateUserFeedback">
+        update user_feedback set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateUserPoint">
+        update user_point set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
+	<update id="updateUserPointDetail">
+        update user_point_detail set user_id = #{itongjiId}
+        where user_id = #{ldcId}
+    </update>
+
 
 
 </mapper>

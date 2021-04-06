@@ -19,8 +19,8 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/register/test/service")
-public class TestService {
-    private Log logger = LogFactory.getLog(TestService.class);
+public class TestServicess {
+    private Log logger = LogFactory.getLog(TestServicess.class);
     //   使用HttpServletRequest 获取cookie
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public String ping(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse) throws IOException {
