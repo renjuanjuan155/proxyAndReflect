@@ -4,13 +4,9 @@ import com.example.aopzhujie.dto.*;
 import com.example.aopzhujie.mapper.TestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-
+import java.util.*;
 
 
 @Service
@@ -18,13 +14,14 @@ public class TestService {
     @Autowired
     private TestMapper testMapper;
 
+    @Transactional
     public void getDataOne(){
 
         //查出手机号相同的用户id
         List<MobileSameDto> mobileSameDtos = testMapper.getdataOne();
         //查询手机号相同的用户判断在ldc中itongji的用户id是否一样，如果不一样则将在ldc中关联的用户id都替换为itongji中的id
         for (MobileSameDto dto: mobileSameDtos){
-            if (dto.getItongjiId() != dto.getLdcId()){
+            if (!dto.getItongjiId().equals(dto.getLdcId()) ){
                 //执行替换ldc中关联用户id的操作
                 //
                 testMapper.updateLdcToItongjiId(dto.getItongjiId(),dto.getLdcId());
@@ -57,38 +54,50 @@ public class TestService {
 
         //查询ldc中没有在itongji中的用户id，将该用户的信息添加到itongji中，并更新关联的数据
         List<MobileDiffDto> ldcMobileNotInintongji = testMapper.getLdcMobileNotInintongji();
+
+        List<Long> ldc = testMapper.getLdc();
+        List<Long> user = testMapper.getUser();
+        List<Long> aa = new ArrayList<Long>();
+        for (MobileSameDto mobileSameDto:mobileSameDtos ){
+            aa.add(mobileSameDto.getLdcId());
+        }
+        List<Long> longs5 = removeAll(ldc, aa);
+
         if (ldcMobileNotInintongji != null && ldcMobileNotInintongji.size() > 0){
-            for (MobileDiffDto dto: ldcMobileNotInintongji){
+            for (Long dto: longs5){
 
                 //将ldc中的数据查询出来
-                ItongjiUsers ldcusersById = testMapper.getLdcusersById(dto.getLdcId());
-                Long aLong = testMapper.saveItongjiUsers(ldcusersById);
+                ItongjiUsers ldcusersById = testMapper.getLdcusersById(dto);
+                Long ldcId = ldcusersById.getId();
+                ldcusersById.setId(null);
+                testMapper.saveItongjiUsers(ldcusersById);
+                Long aLong = ldcusersById.getId();
                 //将原来ldcusersById的id关联的数据都换成asLong
                 //替换ldc_course_vip表中的数据
-                testMapper.updateLdcToItongjiId(aLong,ldcusersById.getId());
-                testMapper.updateCourseWorkSubmit(aLong,ldcusersById.getId());
-                testMapper.updateCourseWorkSubmitReply(aLong,ldcusersById.getId());
-                testMapper.updateLdcForumPost(aLong,ldcusersById.getId());
-                testMapper.updateLdcForumPostAttention(aLong,ldcusersById.getId());
-                testMapper.updateLdcForumPostLike(aLong,ldcusersById.getId());
-                testMapper.updateLdcForumPostReply(aLong,ldcusersById.getId());
-                testMapper.updateLdcgraduationReg(aLong,ldcusersById.getId());
-                testMapper.updateLdcLearnedSection(aLong,ldcusersById.getId());
-                testMapper.updateLdcMsg(aLong,ldcusersById.getId());
-                testMapper.updateLdcPointExechangeRecord(aLong,ldcusersById.getId());
-                testMapper.updateLdcUserResource(aLong,ldcusersById.getId());
-                testMapper.updateLdcVipInfo(aLong,ldcusersById.getId());
-                testMapper.updateQuestion(aLong,ldcusersById.getId());
-                testMapper.updateQuestionAnswer(aLong,ldcusersById.getId());
-                testMapper.updateQuestionAnswerLike(aLong,ldcusersById.getId());
-                testMapper.updateQuestionCollection(aLong,ldcusersById.getId());
-                testMapper.updateQuestionForwarding(aLong,ldcusersById.getId());
-                testMapper.updateQuestionLike(aLong,ldcusersById.getId());
-                testMapper.updateSpecial(aLong,ldcusersById.getId());
-                testMapper.updateSpecialAttention(aLong,ldcusersById.getId());
-                testMapper.updateUserFeedback(aLong,ldcusersById.getId());
-                testMapper.updateUserPoint(aLong,ldcusersById.getId());
-                testMapper.updateUserPointDetail(aLong,ldcusersById.getId());
+                testMapper.updateLdcToItongjiId(aLong,ldcId);
+                testMapper.updateCourseWorkSubmit(aLong,ldcId);
+                testMapper.updateCourseWorkSubmitReply(aLong,ldcId);
+                testMapper.updateLdcForumPost(aLong,ldcId);
+                testMapper.updateLdcForumPostAttention(aLong,ldcId);
+                testMapper.updateLdcForumPostLike(aLong,ldcId);
+                testMapper.updateLdcForumPostReply(aLong,ldcId);
+                testMapper.updateLdcgraduationReg(aLong,ldcId);
+                testMapper.updateLdcLearnedSection(aLong,ldcId);
+                testMapper.updateLdcMsg(aLong,ldcId);
+                testMapper.updateLdcPointExechangeRecord(aLong,ldcId);
+                testMapper.updateLdcUserResource(aLong,ldcId);
+                testMapper.updateLdcVipInfo(aLong,ldcId);
+                testMapper.updateQuestion(aLong,ldcId);
+                testMapper.updateQuestionAnswer(aLong,ldcId);
+                testMapper.updateQuestionAnswerLike(aLong,ldcId);
+                testMapper.updateQuestionCollection(aLong,ldcId);
+                testMapper.updateQuestionForwarding(aLong,ldcId);
+                testMapper.updateQuestionLike(aLong,ldcId);
+                testMapper.updateSpecial(aLong,ldcId);
+                testMapper.updateSpecialAttention(aLong,ldcId);
+                testMapper.updateUserFeedback(aLong,ldcId);
+                testMapper.updateUserPoint(aLong,ldcId);
+                testMapper.updateUserPointDetail(aLong,ldcId);
             }
         }
 
@@ -100,6 +109,8 @@ public class TestService {
 
         //查询出ldc_users和users中mobile为空或‘’时,其余不为空时，信息相等的id
         List<MobileIsNullDto> mobileIsNull = testMapper.getMobileIsNull();
+
+
 
         //sessionisKey和mobile为空时得到的相同的id
         List<Long> mobileIsNullsessionisKeynull = testMapper.getMobileIsNullsessionisKeynull();
@@ -114,11 +125,14 @@ public class TestService {
 
         List<MobileNullDto> usersNull = testMapper.getUsersNull();
 
+        List<Long> ldcd = new ArrayList<Long>();
 
-
+        for (MobileIsNullDto deto:mobileIsNull){
+            ldcd.add(deto.getLdcId());
+        }
 
         //将相同信息的信息集合与ldcUsers中的id进行求差，剩余的就是mobile为‘’或者为空信息不相等的，将这些usersId进行转移到users表汇总
-        List<Long> longs = removeAll(mobileIsNullLdcUsers, mobileIsNullUsers);
+       List<Long> longs = removeAll(mobileIsNullLdcUsers, ldcd);
 
         List<Long> longs1 = removeAll(longs, mobileIsNullsessionisKeynull);
 
@@ -133,39 +147,41 @@ public class TestService {
         for(Long id: longs4){
             //将ldc中的数据查询出来
             ItongjiUsers ldcusersById = testMapper.getLdcusersById(id);
-            Long aLong = testMapper.saveItongjiUsers(ldcusersById);
+            Long ldcId = ldcusersById.getId();
+            testMapper.saveItongjiUsers(ldcusersById);
+            Long aLong = ldcusersById.getId();
             //将原来ldcusersById的id关联的数据都换成asLong
             //替换ldc_course_vip表中的数据
-            testMapper.updateLdcToItongjiId(aLong,ldcusersById.getId());
-            testMapper.updateCourseWorkSubmit(aLong,ldcusersById.getId());
-            testMapper.updateCourseWorkSubmitReply(aLong,ldcusersById.getId());
-            testMapper.updateLdcForumPost(aLong,ldcusersById.getId());
-            testMapper.updateLdcForumPostAttention(aLong,ldcusersById.getId());
-            testMapper.updateLdcForumPostLike(aLong,ldcusersById.getId());
-            testMapper.updateLdcForumPostReply(aLong,ldcusersById.getId());
-            testMapper.updateLdcgraduationReg(aLong,ldcusersById.getId());
-            testMapper.updateLdcLearnedSection(aLong,ldcusersById.getId());
-            testMapper.updateLdcMsg(aLong,ldcusersById.getId());
-            testMapper.updateLdcPointExechangeRecord(aLong,ldcusersById.getId());
-            testMapper.updateLdcUserResource(aLong,ldcusersById.getId());
-            testMapper.updateLdcVipInfo(aLong,ldcusersById.getId());
-            testMapper.updateQuestion(aLong,ldcusersById.getId());
-            testMapper.updateQuestionAnswer(aLong,ldcusersById.getId());
-            testMapper.updateQuestionAnswerLike(aLong,ldcusersById.getId());
-            testMapper.updateQuestionCollection(aLong,ldcusersById.getId());
-            testMapper.updateQuestionForwarding(aLong,ldcusersById.getId());
-            testMapper.updateQuestionLike(aLong,ldcusersById.getId());
-            testMapper.updateSpecial(aLong,ldcusersById.getId());
-            testMapper.updateSpecialAttention(aLong,ldcusersById.getId());
-            testMapper.updateUserFeedback(aLong,ldcusersById.getId());
-            testMapper.updateUserPoint(aLong,ldcusersById.getId());
-            testMapper.updateUserPointDetail(aLong,ldcusersById.getId());
+            testMapper.updateLdcToItongjiId(aLong,ldcId);
+            testMapper.updateCourseWorkSubmit(aLong,ldcId);
+            testMapper.updateCourseWorkSubmitReply(aLong,ldcId);
+            testMapper.updateLdcForumPost(aLong,ldcId);
+            testMapper.updateLdcForumPostAttention(aLong,ldcId);
+            testMapper.updateLdcForumPostLike(aLong,ldcId);
+            testMapper.updateLdcForumPostReply(aLong,ldcId);
+            testMapper.updateLdcgraduationReg(aLong,ldcId);
+            testMapper.updateLdcLearnedSection(aLong,ldcId);
+            testMapper.updateLdcMsg(aLong,ldcId);
+            testMapper.updateLdcPointExechangeRecord(aLong,ldcId);
+            testMapper.updateLdcUserResource(aLong,ldcId);
+            testMapper.updateLdcVipInfo(aLong,ldcId);
+            testMapper.updateQuestion(aLong,ldcId);
+            testMapper.updateQuestionAnswer(aLong,ldcId);
+            testMapper.updateQuestionAnswerLike(aLong,ldcId);
+            testMapper.updateQuestionCollection(aLong,ldcId);
+            testMapper.updateQuestionForwarding(aLong,ldcId);
+            testMapper.updateQuestionLike(aLong,ldcId);
+            testMapper.updateSpecial(aLong,ldcId);
+            testMapper.updateSpecialAttention(aLong,ldcId);
+            testMapper.updateUserFeedback(aLong,ldcId);
+            testMapper.updateUserPoint(aLong,ldcId);
+            testMapper.updateUserPointDetail(aLong,ldcId);
         }
 
         //将两个表信息相等的id进行处理，将ldc_users表中的信息都与users表中的数据进行处理
         //判断两个表中的数据是否都是一样的
         for (MobileIsNullDto dto: mobileIsNull){
-            if (dto.getItongjiId() != dto.getLdcId()){
+            if (!dto.getItongjiId().equals(dto.getLdcId()) ){
                 //执行替换ldc中关联用户id的操作
                 //替换爱数据学院，用户关联课程表中的userId
                 testMapper.updateLdcToItongjiId(dto.getItongjiId(),dto.getLdcId());
@@ -201,7 +217,7 @@ public class TestService {
     public  static List<Long> removeAll(List<Long> list1,List<Long> list2){
 
         LinkedList<Long> result = new LinkedList<Long>(list1);
-        HashSet<Long> set = new HashSet<Long>(list1);
+        HashSet<Long> set = new HashSet<Long>(list2);
         Iterator<Long> itor = result.iterator();
         while(itor.hasNext()){
             if(set.contains(itor.next())){

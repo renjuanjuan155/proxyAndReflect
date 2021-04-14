@@ -94,6 +94,24 @@
         and ldcUsers.mobile is not null
     </select>
 
+    <select id="getLdc" resultType="long">
+        SELECT
+        ldcUsers.id ldcId
+        from ldc_users  ldcUsers
+        where
+         ldcUsers.mobile != ''
+        and ldcUsers.mobile is not null
+    </select>
+
+    <select id="getUser" resultType="long">
+        SELECT
+        DISTINCT
+        users.id
+        from users
+        where  users.mobile is not null
+        and users.mobile != ''
+    </select>
+
     <!--根据id查询ldc中的users表信息信息-->
     <select id="getLdcusersById" resultMap="usersMap">
         select *
@@ -363,8 +381,8 @@ and ldcusers.wx_sp_user_session_key is null
     </update>
 
 	<update id="updateLdcgraduationReg">
-        update ldc_forum_graduation_reg set student_info_id = #{itongjiId}
-        where student_info_id = #{ldcId}
+        update ldc_graduation_reg set students_info_id = #{itongjiId}
+        where students_info_id = #{ldcId}
     </update>
 
 	<update id="updateLdcLearnedSection">

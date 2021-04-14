@@ -1,3 +1,4 @@
+/*
 package com.example.aopzhujie.controller;
 
 import org.apache.commons.logging.Log;
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+*/
 /**
  * @Description
  * @Date 2020/12/13 14:02
  * @Created by meijunjie
- */
+ *//*
+
 @RestController
 @RequestMapping("/register/test/service")
 public class TestServicess {
@@ -31,3 +34,4 @@ public class TestServicess {
         return "OK!!!";
     }
 }
+*/
